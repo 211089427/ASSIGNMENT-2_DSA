@@ -46,9 +46,6 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "time"}
 ]
-modules = [
-	{org = "ballerina", packageName = "crypto", moduleName = "crypto"}
-]
 
 [[package]]
 org = "ballerina"
@@ -59,32 +56,6 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "os"},
 	{org = "ballerina", name = "time"}
-]
-
-[[package]]
-org = "ballerina"
-name = "graphql"
-version = "1.9.0"
-dependencies = [
-	{org = "ballerina", name = "auth"},
-	{org = "ballerina", name = "file"},
-	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "jwt"},
-	{org = "ballerina", name = "lang.array"},
-	{org = "ballerina", name = "lang.value"},
-	{org = "ballerina", name = "log"},
-	{org = "ballerina", name = "mime"},
-	{org = "ballerina", name = "oauth2"},
-	{org = "ballerina", name = "task"},
-	{org = "ballerina", name = "time"},
-	{org = "ballerina", name = "websocket"}
-]
-modules = [
-	{org = "ballerina", packageName = "graphql", moduleName = "graphql"},
-	{org = "ballerina", packageName = "graphql", moduleName = "graphql.parser"},
-	{org = "ballerina", packageName = "graphql", moduleName = "graphql.subgraph"}
 ]
 
 [[package]]
@@ -126,9 +97,6 @@ version = "1.5.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
-]
-modules = [
-	{org = "ballerina", packageName = "io", moduleName = "io"}
 ]
 
 [[package]]
@@ -172,15 +140,6 @@ dependencies = [
 org = "ballerina"
 name = "lang.decimal"
 version = "0.0.0"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"}
-]
-
-[[package]]
-org = "ballerina"
-name = "lang.error"
-version = "0.0.0"
-scope = "testOnly"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
@@ -243,9 +202,6 @@ dependencies = [
 	{org = "ballerina", name = "lang.value"},
 	{org = "ballerina", name = "observe"}
 ]
-modules = [
-	{org = "ballerina", packageName = "log", moduleName = "log"}
-]
 
 [[package]]
 org = "ballerina"
@@ -289,50 +245,11 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
-name = "random"
-version = "1.4.0"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "time"}
-]
-modules = [
-	{org = "ballerina", packageName = "random", moduleName = "random"}
-]
-
-[[package]]
-org = "ballerina"
-name = "sql"
-version = "1.10.1"
-dependencies = [
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "lang.object"},
-	{org = "ballerina", name = "time"}
-]
-modules = [
-	{org = "ballerina", packageName = "sql", moduleName = "sql"}
-]
-
-[[package]]
-org = "ballerina"
 name = "task"
 version = "2.4.0"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "time"}
-]
-
-[[package]]
-org = "ballerina"
-name = "test"
-version = "0.0.0"
-scope = "testOnly"
-dependencies = [
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "lang.error"}
-]
-modules = [
-	{org = "ballerina", packageName = "test", moduleName = "test"}
 ]
 
 [[package]]
@@ -352,26 +269,6 @@ dependencies = [
 ]
 
 [[package]]
-org = "ballerina"
-name = "websocket"
-version = "2.9.1"
-dependencies = [
-	{org = "ballerina", name = "auth"},
-	{org = "ballerina", name = "constraint"},
-	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "jwt"},
-	{org = "ballerina", name = "lang.array"},
-	{org = "ballerina", name = "lang.runtime"},
-	{org = "ballerina", name = "lang.string"},
-	{org = "ballerina", name = "lang.value"},
-	{org = "ballerina", name = "log"},
-	{org = "ballerina", name = "oauth2"},
-	{org = "ballerina", name = "time"}
-]
-
-[[package]]
 org = "ballerinai"
 name = "observe"
 version = "0.0.0"
@@ -384,38 +281,14 @@ modules = [
 ]
 
 [[package]]
-org = "ballerinax"
-name = "mysql"
-version = "1.10.0"
-dependencies = [
-	{org = "ballerina", name = "crypto"},
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "jballerina.java"},
-	{org = "ballerina", name = "sql"},
-	{org = "ballerina", name = "time"}
-]
-modules = [
-	{org = "ballerinax", packageName = "mysql", moduleName = "mysql"}
-]
-
-[[package]]
 org = "matheusmulundu"
-name = "graphql"
+name = "graphql_client"
 version = "0.1.0"
 dependencies = [
-	{org = "ballerina", name = "crypto"},
-	{org = "ballerina", name = "graphql"},
 	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "io"},
-	{org = "ballerina", name = "log"},
-	{org = "ballerina", name = "random"},
-	{org = "ballerina", name = "sql"},
-	{org = "ballerina", name = "test"},
-	{org = "ballerinai", name = "observe"},
-	{org = "ballerinax", name = "mysql"}
+	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "matheusmulundu", packageName = "graphql", moduleName = "graphql"},
-	{org = "matheusmulundu", packageName = "graphql", moduleName = "graphql.mysql"}
+	{org = "matheusmulundu", packageName = "graphql_client", moduleName = "graphql_client"}
 ]
 
