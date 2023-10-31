@@ -9,7 +9,7 @@ import ballerina/crypto;
 // import ballerina/lang.'string;
 
 
-mysql:Client p1DB = check new("localhost", "root", "root", "assignment-2", 3307);
+mysql:Client DB = check new("localhost", "root", "root", "assignment-2", 3307);
 
   
 // At the top level of your module
@@ -30,7 +30,7 @@ service /graphql on new graphql:Listener(8080) {
         }
 
         sql:ParameterizedQuery query = `SELECT * FROM Users WHERE id = ${id}`;
-        stream<User, sql:Error?> resultStream = p1DB->query(query, User);
+        stream<User, sql:Error?> resultStream = DB->query(query, User);
 
         record {| User value; |}? result = check resultStream.next();
 
@@ -55,7 +55,7 @@ service /graphql on new graphql:Listener(8080) {
             return error("Authentication failed. Please log in.");
         }
         sql:ParameterizedQuery depQuery = `SELECT * FROM Departments WHERE id = ${id}`;
-        stream<Department, sql:Error?> depStream = p1DB->query(depQuery);
+        stream<Department, sql:Error?> depStream = DB->query(depQuery);
 
         record {| Department value; |}? depResult = check depStream.next();
 
@@ -65,7 +65,7 @@ service /graphql on new graphql:Listener(8080) {
             // If the hodId is present in the department, fetch the corresponding User
             if (dept.hodId is int) {
                 sql:ParameterizedQuery hodQuery = `SELECT * FROM Users WHERE id = ${dept.hodId}`;
-                stream<User, sql:Error?> hodStream = p1DB->query(hodQuery, User);
+                stream<User, sql:Error?> hodStream = DB->query(hodQuery, User);
                 record {| User value; |}? hodResult = check hodStream.next();
                 if (hodResult is record {| User value; |}) {
                     dept.hod = hodResult.value;
@@ -88,7 +88,7 @@ service /graphql on new graphql:Listener(8080) {
                 return error("Authentication failed. Please log in.");
             }
         sql:ParameterizedQuery objQuery = `SELECT * FROM DepartmentObjectives WHERE id = ${id}`;
-        stream<DepartmentObjective, sql:Error?> objStream = p1DB->query(objQuery);
+        stream<DepartmentObjective, sql:Error?> objStream = DB->query(objQuery);
 
         record {| DepartmentObjective value; |}? objResult = check objStream.next();
 
@@ -101,7 +101,7 @@ service /graphql on new graphql:Listener(8080) {
                 FROM KPIs 
                 JOIN ObjectiveKPIRelation ON KPIs.id = ObjectiveKPIRelation.kpiId
                 WHERE ObjectiveKPIRelation.objectiveId = ${id}`;
-            stream<KPI, sql:Error?> kpiStream = p1DB->query(kpiQuery);
+            stream<KPI, sql:Error?> kpiStream = DB->query(kpiQuery);
             KPI[] kpis = [];
             error? kpiErr = kpiStream.forEach(function(KPI kpi) {
                 kpis.push(kpi);
@@ -124,7 +124,7 @@ service /graphql on new graphql:Listener(8080) {
                 return error("Authentication failed. Please log in.");
             }        
         sql:ParameterizedQuery kpiQuery = `SELECT * FROM KPIs WHERE id = ${id}`;
-        stream<KPI, sql:Error?> kpiStream = p1DB->query(kpiQuery);
+        stream<KPI, sql:Error?> kpiStream = DB->query(kpiQuery);
 
         record {| KPI value; |}? kpiResult = check kpiStream.next();
 
@@ -137,7 +137,7 @@ service /graphql on new graphql:Listener(8080) {
                 FROM DepartmentObjectives 
                 JOIN ObjectiveKPIRelation ON DepartmentObjectives.id = ObjectiveKPIRelation.objectiveId
                 WHERE ObjectiveKPIRelation.kpiId = ${id}`;
-            stream<DepartmentObjective, sql:Error?> objStream = p1DB->query(objQuery);
+            stream<DepartmentObjective, sql:Error?> objStream = DB->query(objQuery);
 
             DepartmentObjective[] objs = [];
             error? objStreamErr = objStream.forEach(function(DepartmentObjective obj) {
@@ -164,7 +164,7 @@ service /graphql on new graphql:Listener(8080) {
             }
 
         sql:ParameterizedQuery userQuery = `SELECT * FROM Users`;
-        stream<User, sql:Error?> userStream = p1DB->query(userQuery);
+        stream<User, sql:Error?> userStream = DB->query(userQuery);
         User[] users = [];
         
         // Iterate over the stream to populate the users array
@@ -187,7 +187,7 @@ service /graphql on new graphql:Listener(8080) {
             }
 
         sql:ParameterizedQuery depQuery = `SELECT * FROM Departments`;
-        stream<Department, sql:Error?> depStream = p1DB->query(depQuery);
+        stream<Department, sql:Error?> depStream = DB->query(depQuery);
         
         Department[] departments = [];
         // Iterate over the stream to populate the departments array
@@ -209,7 +209,7 @@ service /graphql on new graphql:Listener(8080) {
             }
 
         sql:ParameterizedQuery objQuery = `SELECT * FROM DepartmentObjectives`;
-        stream<DepartmentObjective, sql:Error?> objStream = p1DB->query(objQuery);
+        stream<DepartmentObjective, sql:Error?> objStream = DB->query(objQuery);
 
         DepartmentObjective[] objectives = [];
         
@@ -233,7 +233,7 @@ service /graphql on new graphql:Listener(8080) {
             }
 
         sql:ParameterizedQuery kpiQuery = `SELECT * FROM KPIs`;
-        stream<KPI, sql:Error?> kpiStream = p1DB->query(kpiQuery);
+        stream<KPI, sql:Error?> kpiStream = DB->query(kpiQuery);
 
         KPI[] kpis = [];
         
@@ -257,7 +257,7 @@ service /graphql on new graphql:Listener(8080) {
 
         sql:ParameterizedQuery query = `INSERT INTO Users(firstName, lastName, jobTitle, position, role, departmentId) VALUES(${firstName}, ${lastName}, ${jobTitle}, ${position}, ${role}, ${departmentId})`;
         
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             int userId;
@@ -298,7 +298,7 @@ service /graphql on new graphql:Listener(8080) {
         
         sql:ParameterizedQuery query = `UPDATE Users SET firstName=${firstName}, lastName=${lastName}, jobTitle=${jobTitle}, position=${position}, role=${role}, departmentId=${departmentId} WHERE id=${id}`;
         
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             User updatedUser = {
@@ -324,7 +324,7 @@ service /graphql on new graphql:Listener(8080) {
         
         sql:ParameterizedQuery query = `DELETE FROM Users WHERE id=${id}`;
         
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             return true;
@@ -341,7 +341,7 @@ service /graphql on new graphql:Listener(8080) {
         
         sql:ParameterizedQuery query = `INSERT INTO Departments(name) VALUES(${name})`;
         
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             int departmentId;
@@ -369,7 +369,7 @@ service /graphql on new graphql:Listener(8080) {
         
         sql:ParameterizedQuery query = `UPDATE Departments SET name=${name} WHERE id=${id}`;
         
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             Department updatedDepartment = {
@@ -390,7 +390,7 @@ service /graphql on new graphql:Listener(8080) {
         
         sql:ParameterizedQuery query = `DELETE FROM Departments WHERE id=${id}`;
         
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             return true;
@@ -407,7 +407,7 @@ service /graphql on new graphql:Listener(8080) {
         
         sql:ParameterizedQuery query = `INSERT INTO DepartmentObjectives(name, weight, departmentId) VALUES(${name}, ${weight}, ${departmentId})`;
         
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             int objectiveId;
@@ -437,7 +437,7 @@ service /graphql on new graphql:Listener(8080) {
         
         sql:ParameterizedQuery query = `UPDATE DepartmentObjectives SET name=${name}, weight=${weight} WHERE id=${id}`;
         
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             return {id: id, name: name, weight: weight};
@@ -455,7 +455,7 @@ service /graphql on new graphql:Listener(8080) {
 
         sql:ParameterizedQuery query = `DELETE FROM DepartmentObjectives WHERE id=${id}`;
         
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             return true;
@@ -471,7 +471,7 @@ service /graphql on new graphql:Listener(8080) {
             }
 
         sql:ParameterizedQuery query = `INSERT INTO KPIs(userId, name, metric, unit) VALUES(${userId}, ${name}, ${metric}, ${unit})`;
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             KPI newKPI = {
@@ -496,7 +496,7 @@ service /graphql on new graphql:Listener(8080) {
             }
 
         sql:ParameterizedQuery query = `UPDATE KPIs SET userId=${userId}, name=${name}, metric=${metric}, unit=${unit}, score=${score} WHERE id=${id}`;
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             KPI updatedKPI = {
@@ -520,7 +520,7 @@ service /graphql on new graphql:Listener(8080) {
             }
 
         sql:ParameterizedQuery query = `DELETE FROM KPIs WHERE id=${id}`;
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
         
         if (response is sql:ExecutionResult) {
             return true;
@@ -537,7 +537,7 @@ service /graphql on new graphql:Listener(8080) {
             }
 
         sql:ParameterizedQuery query = `UPDATE KPIs SET approved=true WHERE id=${kpiId} AND userId IN (SELECT id FROM Users WHERE supervisorId=${supervisorId})`;
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
 
         if (response is sql:ExecutionResult) {
             return true;
@@ -553,7 +553,7 @@ service /graphql on new graphql:Listener(8080) {
             }
 
         sql:ParameterizedQuery query = `UPDATE KPIs SET grade=${grade} WHERE id=${kpiId} AND userId IN (SELECT id FROM Users WHERE supervisorId=${supervisorId})`;
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
 
         if (response is sql:ExecutionResult) {
             return true;
@@ -562,13 +562,13 @@ service /graphql on new graphql:Listener(8080) {
         }
     }
     // Allow Employee to update their own KPIs
-    remote function get updateMyKPI(int userId, int kpiId, string name, string metric, string unit, string token) returns KPI|error {
+    resource function get updateMyKPI(int userId, int kpiId, string name, string metric, string unit, string token) returns KPI|error {
             if (!isAuthenticated(token)) {
                 return error("Authentication failed. Please log in.");
             }
 
         sql:ParameterizedQuery query = `UPDATE KPIs SET name=${name}, metric=${metric}, unit=${unit} WHERE id=${kpiId} AND userId=${userId}`;
-        var response = p1DB->execute(query);
+        var response = DB->execute(query);
 
         if (response is sql:ExecutionResult) {
             KPI updatedKPI = {
@@ -590,7 +590,7 @@ service /graphql on new graphql:Listener(8080) {
     resource function get login(string firstName, string lastName, string email, string password) returns string|error {
     // First, get the salt associated with this email.
     sql:ParameterizedQuery saltQuery = `SELECT salt FROM UserAuthentication WHERE email = ${email}`;
-    stream<record {| string salt; |}, sql:Error?> saltStream = p1DB->query(saltQuery);
+    stream<record {| string salt; |}, sql:Error?> saltStream = DB->query(saltQuery);
     
     record {| record {| string salt; |} value; |}? saltResult = check saltStream.next();
 
@@ -602,7 +602,7 @@ service /graphql on new graphql:Listener(8080) {
         
         // Now check if a user with the provided details and the hashed password exists
         sql:ParameterizedQuery authQuery = `SELECT U.Id, U.FirstName, U.LastName, U.jobTitle, U.position, U.role, U.departmentId, UA.email, UA.hashedPassword, UA.salt FROM Users U INNER JOIN UserAuthentication UA ON U.id = UA.userId WHERE U.firstName = ${firstName} AND U.lastName = ${lastName} AND UA.email = ${email} AND UA.hashedPassword = ${hashedPassword}`;
-        stream<record {| int id; string firstName; string lastName; string? jobTitle; string? position; string role; int? departmentId; string email; string hashedPassword; string salt; |}, sql:Error?> resultStream = p1DB->query(authQuery);
+        stream<record {| int id; string firstName; string lastName; string? jobTitle; string? position; string role; int? departmentId; string email; string hashedPassword; string salt; |}, sql:Error?> resultStream = DB->query(authQuery);
         
         record {| record {| int id; string firstName; string lastName; string? jobTitle; string? position; string role; int? departmentId; string email; string hashedPassword; string salt; |} value; |}? result = check resultStream.next();
         
@@ -633,7 +633,7 @@ service /graphql on new graphql:Listener(8080) {
         
         // First, insert the user into the Users table.
         sql:ParameterizedQuery insertUserQuery = `INSERT INTO Users (firstName, lastName, jobTitle, position, role, departmentId, email) VALUES (${firstName}, ${lastName}, ${jobTitle}, ${position}, ${role}, ${departmentId}, ${email})`;
-        var userInsertResponse = p1DB->execute(insertUserQuery);
+        var userInsertResponse = DB->execute(insertUserQuery);
         if (userInsertResponse is sql:ExecutionResult) {
             // Get the userId generated by the previous insertion
             string|int? userId = userInsertResponse.lastInsertId;
@@ -641,7 +641,7 @@ service /graphql on new graphql:Listener(8080) {
             if (userId is int) {
                 // Now insert into the UserAuthentication table
                 sql:ParameterizedQuery authQuery = `INSERT INTO UserAuthentication (userId, email, hashedPassword, salt) VALUES(${userId}, ${email}, ${hashedPassword}, ${salt})`;
-                var authInsertResponse = p1DB->execute(authQuery);
+                var authInsertResponse = DB->execute(authQuery);
                 
                 if (authInsertResponse is sql:ExecutionResult) {
                     return "Registration successful!";
