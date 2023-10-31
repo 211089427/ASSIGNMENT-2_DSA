@@ -1,6 +1,6 @@
 [package]
-org = "kukut"
-name = "Client"
+org = "zeze"
+name = "Server"
 version = "0.1.0"
 distribution = "2201.8.2"
 
