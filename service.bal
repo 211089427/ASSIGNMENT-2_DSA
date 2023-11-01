@@ -64,14 +64,6 @@ configurable string databaseName = "Performance_Management_System";
 service /Management on new graphql:Listener(9090) {
 
 
-
- // Ignore this code I didnt have a choice
- resource function get getAllLecturers() returns string {
-        return "hi";
-    }
-
-
-
     
     // Adding an Employee
     remote function Add_an_Employee(Employee newemployee) returns error|string {
